@@ -9,25 +9,13 @@
 (def id [i j k])
 (def zero [0 0 0])
 
-(defn- zip-accum [f acc args]
-  (if (not (empty? (first args)))
-    (let [x (map first args)
-          r (map rest args)
-          acc (conj acc (apply f x))]
-      (recur f acc r)) acc))
-
-(defn zip [f & args]
-  "takes n lists and computes one new list by applying function f to
-  the n-th argument of each list."
-  (zip-accum f [] args))
-
 (defn + [x y]
   "vector addition"
-  (zip core/+ x y))
+  (map core/+ x y))
 
 (defn - [x y]
   "vector subtraction"
-  (zip core/- x y))
+  (map core/- x y))
 
 (defn s* [a x]
   "scalar multiplication of a (scalar) and x (vector)"
@@ -35,7 +23,7 @@
 
 (defn d* [x y]
   "dot product of x and y"
-  (reduce core/+ 0 (zip core/* x y)))
+  (reduce core/+ 0 (map core/* x y)))
 
 (defn || [x]
   "length of vector x"
@@ -43,7 +31,7 @@
 
 (defn * [A x]
   "matrix multiplication A and x are assumed to be of the right shapes"
-  (reduce + zero (zip s* x A)))
+  (reduce + zero (map s* x A)))
 
 (defn proj [x y]
   "Projects x onto y"

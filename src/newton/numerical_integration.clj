@@ -20,7 +20,7 @@
 	qs (map :q state)
         gms (map :gm state)
         as (pmap #(accel (force state % t dt) (:m %)) state)
-        nvs (zip #(step-integ %1 %2 dt) vs as)
-        nxs (zip #(step-integ %1 %2 dt) xs vs)
-	nstate (zip #(O. %1 %2 %3 %4 %5 %6 %7) ms ds gms qs nxs nvs as)]
+        nvs (map #(step-integ %1 %2 dt) vs as)
+        nxs (map #(step-integ %1 %2 dt) xs vs)
+	nstate (map #(O. %1 %2 %3 %4 %5 %6 %7) ms ds gms qs nxs nvs as)]
     (handle-collision nstate update-collided)))
